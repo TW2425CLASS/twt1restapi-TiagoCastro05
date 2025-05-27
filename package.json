@@ -1,0 +1,19 @@
+{
+    "name": "my-awesome-project",
+    "version": "1.0.0",
+    "description": "A project that does awesome things",
+    "scripts": {
+        "start-outro": "json-server --watch ./mock-data/bd.json --port 3001",
+        "start-real": "node backend/server.js"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.5.0",
+        "express": "^5.1.0",
+        "json-server": "^0.17.0",
+        "mongoose": "^8.15.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.10"
+    }
+}

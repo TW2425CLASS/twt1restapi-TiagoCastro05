@@ -1,1 +1,92 @@
-/* Estilos para a página */
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Headings */
+h1 {
+    color: #0056b3;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+/* Lists */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#alunos-list li, #cursos-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* space between text and buttons */
+}
+
+#alunos-list button, #cursos-list button {
+    margin-left: 4px;
+}
+
+/* Buttons container */
+ul li div {
+    display: flex;
+    gap: 10px; /* Add spacing between buttons */
+}
+
+/* Buttons */
+button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #e60000;
+}
+
+/* Forms */
+form {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form input {
+    margin: 5px 0;
+    padding: 8px;
+    width: calc(100% - 20px);
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+form button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #003d80;
+}
