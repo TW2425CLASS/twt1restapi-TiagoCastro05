@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "A project that does awesome things",
     "scripts": {
-        "start-outro": "json-server --watch ./mock-data/bd.json --port 3001",
+        "start-outro": "node backend/server.js",
         "start-real": "node backend/server.js"
     },
     "dependencies": {
