@@ -30,7 +30,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: ['./server.js'], // Vai ler os comentários deste arquivo
+  apis: ['backend/server.js'], // Vai ler os comentários deste arquivo
 };
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -58,10 +58,10 @@ app.get('/', async (req, res) => {
  * @swagger
  * /Alunos:
  *   get:
- *     summary: Retorna a lista de alunos
+ *     summary: Lista todos os alunos
  *     responses:
  *       200:
- *         description: Lista de alunos
+ *         description: Lista de alunos retornada com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -69,8 +69,9 @@ app.get('/', async (req, res) => {
  *               items:
  *                 type: object
  *                 properties:
- *                   _id:
+ *                   id:
  *                     type: string
+ *                     description: ID do aluno
  *                   nome:
  *                     type: string
  *                   apelido:
@@ -82,6 +83,7 @@ app.get('/Alunos', async (req, res) => {
   const alunos = await alunosCollection.find().toArray();
   res.json(alunos);
 });
+
 
 /**
  * @swagger
@@ -222,3 +224,240 @@ app.get('/Cursos/:id', async (req, res) => {
     res.status(400).json({ message: 'ID inválido' });
   }
 });
+
+
+/**
+ * @swagger
+ * /Alunos:
+ *   post:
+ *     summary: Cria um novo aluno
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - nome
+ *               - apelido
+ *               - cursoID
+ *             properties:
+ *               nome:
+ *                 type: string
+ *               apelido:
+ *                 type: string
+ *               cursoID:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Aluno criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 nome:
+ *                   type: string
+ *                 apelido:
+ *                   type: string
+ *                 cursoID:
+ *                   type: string
+ */
+app.post('/Alunos', async (req, res) => {
+  try {
+    const novoAluno = req.body;
+    const resultado = await alunosCollection.insertOne(novoAluno);
+    res.status(201).json(resultado.ops[0]);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao criar aluno', error });
+  }
+});
+
+/**
+ * @swagger
+ * /Alunos/{id}:
+ *   put:
+ *     summary: Atualiza um aluno existente
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do aluno
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nome:
+ *                 type: string
+ *               apelido:
+ *                 type: string
+ *               cursoID:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Aluno atualizado com sucesso
+ *       404:
+ *         description: Aluno não encontrado
+ */
+app.put('/Alunos/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const dadosAtualizados = req.body;
+    const resultado = await alunosCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: dadosAtualizados }
+    );
+    if (resultado.matchedCount === 0) {
+      return res.status(404).json({ message: 'Aluno não encontrado' });
+    }
+    res.json({ message: 'Aluno atualizado com sucesso' });
+  } catch (error) {
+    res.status(400).json({ message: 'ID inválido', error });
+  }
+});
+
+/**
+ * @swagger
+ * /Alunos/{id}:
+ *   delete:
+ *     summary: Deleta um aluno pelo ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do aluno
+ *     responses:
+ *       200:
+ *         description: Aluno deletado com sucesso
+ *       404:
+ *         description: Aluno não encontrado
+ */
+app.delete('/Alunos/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const resultado = await alunosCollection.deleteOne({ _id: new ObjectId(id) });
+    if (resultado.deletedCount === 0) {
+      return res.status(404).json({ message: 'Aluno não encontrado' });
+    }
+    res.json({ message: 'Aluno deletado com sucesso' });
+  } catch (error) {
+    res.status(400).json({ message: 'ID inválido', error });
+  }
+});
+
+/* --- Mesma lógica para Cursos --- */
+
+/**
+ * @swagger
+ * /Cursos:
+ *   post:
+ *     summary: Cria um novo curso
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - nomeCurso
+ *             properties:
+ *               nomeCurso:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Curso criado com sucesso
+ */
+app.post('/Cursos', async (req, res) => {
+  try {
+    const novoCurso = req.body;
+    const resultado = await cursosCollection.insertOne(novoCurso);
+    res.status(201).json(resultado.ops[0]);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao criar curso', error });
+  }
+});
+
+/**
+ * @swagger
+ * /Cursos/{id}:
+ *   put:
+ *     summary: Atualiza um curso existente
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do curso
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nomeCurso:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Curso atualizado com sucesso
+ *       404:
+ *         description: Curso não encontrado
+ */
+app.put('/Cursos/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const dadosAtualizados = req.body;
+    const resultado = await cursosCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: dadosAtualizados }
+    );
+    if (resultado.matchedCount === 0) {
+      return res.status(404).json({ message: 'Curso não encontrado' });
+    }
+    res.json({ message: 'Curso atualizado com sucesso' });
+  } catch (error) {
+    res.status(400).json({ message: 'ID inválido', error });
+  }
+});
+
+/**
+ * @swagger
+ * /Cursos/{id}:
+ *   delete:
+ *     summary: Deleta um curso pelo ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do curso
+ *     responses:
+ *       200:
+ *         description: Curso deletado com sucesso
+ *       404:
+ *         description: Curso não encontrado
+ */
+app.delete('/Cursos/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const resultado = await cursosCollection.deleteOne({ _id: new ObjectId(id) });
+    if (resultado.deletedCount === 0) {
+      return res.status(404).json({ message: 'Curso não encontrado' });
+    }
+    res.json({ message: 'Curso deletado com sucesso' });
+  } catch (error) {
+    res.status(400).json({ message: 'ID inválido', error });
+  }
+});
+
