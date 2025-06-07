@@ -3,7 +3,7 @@
 
     const app = express();
     const port = 3001;
-    const MONGO_URI = 'mongodb+srv://tiagoc:Rubi2012%2B@cluster0.rhvsbu0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; 
+    const MONGO_URI = 'mongodb+srv://admin:123@cluster0.rhvsbu0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; 
     const DB_NAME = 'Académicos';
 
 
