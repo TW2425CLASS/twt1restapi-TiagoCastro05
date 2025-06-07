@@ -268,3 +268,28 @@ document.getElementById('search-curso-btn').addEventListener('click', () => {
             console.error(error);
         });
 });
+
+
+
+
+// Filtrar Alunos
+document.getElementById('search-alunos').addEventListener('input', function () {
+    const query = this.value.toLowerCase().trim();
+    const alunos = document.querySelectorAll('#alunos-list li');
+
+    alunos.forEach(li => {
+        const texto = li.textContent.toLowerCase();
+        li.style.display = texto.includes(query) ? 'flex' : 'none';
+    });
+});
+
+// Filtrar Cursos
+document.getElementById('search-cursos').addEventListener('input', function () {
+    const query = this.value.toLowerCase().trim();
+    const cursos = document.querySelectorAll('#cursos-list li');
+
+    cursos.forEach(li => {
+        const texto = li.textContent.toLowerCase();
+        li.style.display = texto.includes(query) ? 'flex' : 'none';
+    });
+});
