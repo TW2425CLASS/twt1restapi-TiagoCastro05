@@ -3,14 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const cursosList = document.getElementById('cursos-list');
     const alunoForm = document.getElementById('aluno-form');
     const cursoForm = document.getElementById('curso-form');
-    const apiURL: 'http://localhost:10000'
+    const apiURL = 'https://twt1restapi-tiagocastro05-1.onrender.com'; // Adjust the API URL as needed
 
     let editingAlunoId = null; // Track the Aluno being edited
     let editingCursoId = null; // Track the Curso being edited
 
     // Fetch and display all Alunos
     function fetchAlunos() {
-        fetch('${apiURL}/Alunos')
+        fetch(`${apiURL}/Alunos`)
             .then(response => response.json())
             .then(alunos => {
                 const alunosList = document.getElementById('alunos-list');
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fetch and display all Cursos
     function fetchCursos() {
-        fetch('${apiURL}/cursos')
+        fetch(`${apiURL}/cursos`)
             .then(response => response.json())
             .then(cursos => {
                 const cursosList = document.getElementById('cursos-list');
@@ -127,13 +127,13 @@ document.addEventListener("DOMContentLoaded", () => {
             ? `${apiURL}/Alunos/${editingAlunoId}`
             : editingAlunoId
             ? `${apiURL}/Alunos/${editingAlunoId}`
-            : '${apiURL}/Alunos';
+            : `${apiURL}/Alunos`;
 
         // Handle ID change by deleting the old entry and creating a new one
         if (editingAlunoId && editingAlunoId !== id) {
             fetch(`${apiURL}/Alunos/${editingAlunoId}`, { method: 'DELETE' })
                 .then(() => {
-                    fetch('${apiURL}/Alunos', {
+                    fetch(`${apiURL}/Alunos`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ id, nome, apelido, cursoID })
@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const method = editingCursoId ? 'PUT' : 'POST';
         const url = editingCursoId
             ? `${apiURL}/Cursos/${editingCursoId}`
-            : '${apiURL}/Cursos';
+            : `${apiURL}/Cursos`;
 
         fetch(url, {
             method,
