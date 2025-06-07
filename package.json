@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "A project that does awesome things",
     "scripts": {
-        "start-outro": "node backend/server.js",
+        "start": "node backend/server.js",
+        "dev": "nodemon backend/server.js",
+        "start-outro": "json-server --watch ./mock-data/bd.json --port 3001",
         "start-real": "node backend/server.js"
     },
     "dependencies": {

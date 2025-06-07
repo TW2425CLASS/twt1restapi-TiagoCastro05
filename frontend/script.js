@@ -3,13 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const cursosList = document.getElementById('cursos-list');
     const alunoForm = document.getElementById('aluno-form');
     const cursoForm = document.getElementById('curso-form');
+    const apiURL: 'http://localhost'
 
     let editingAlunoId = null; // Track the Aluno being edited
     let editingCursoId = null; // Track the Curso being edited
 
     // Fetch and display all Alunos
     function fetchAlunos() {
-        fetch('https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Alunos')
+        fetch('http://localhost:3001/Alunos')
             .then(response => response.json())
             .then(alunos => {
                 const alunosList = document.getElementById('alunos-list');
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fetch and display all Cursos
     function fetchCursos() {
-        fetch('https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/cursos')
+        fetch('http://localhost:3001/cursos')
             .then(response => response.json())
             .then(cursos => {
                 const cursosList = document.getElementById('cursos-list');
@@ -101,14 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Delete Aluno
     function deleteAluno(id) {
-        fetch(`https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Alunos/${id}`, { method: 'DELETE' })
+        fetch(`http://localhost:3001/Alunos/${id}`, { method: 'DELETE' })
             .then(() => fetchAlunos())
             .catch(error => console.error('Error deleting Aluno:', error));
     }
 
     // Delete Curso
     function deleteCurso(id) {
-        fetch(`https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Cursos/${id}`, { method: 'DELETE' })
+        fetch(`http://localhost:3001/Cursos/${id}`, { method: 'DELETE' })
             .then(() => fetchCursos())
             .catch(error => console.error('Error deleting Curso:', error));
     }
@@ -123,16 +124,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const method = editingAlunoId && editingAlunoId !== id ? 'DELETE' : editingAlunoId ? 'PUT' : 'POST';
         const url = editingAlunoId && editingAlunoId !== id
-            ? `https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Alunos/${editingAlunoId}`
+            ? `http://localhost:3001/Alunos/${editingAlunoId}`
             : editingAlunoId
-            ? `https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Alunos/${editingAlunoId}`
-            : 'https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Alunos';
+            ? `http://localhost:3001/Alunos/${editingAlunoId}`
+            : 'http://localhost:3001/Alunos';
 
         // Handle ID change by deleting the old entry and creating a new one
         if (editingAlunoId && editingAlunoId !== id) {
-            fetch(`https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Alunos/${editingAlunoId}`, { method: 'DELETE' })
+            fetch(`http://localhost:3001/Alunos/${editingAlunoId}`, { method: 'DELETE' })
                 .then(() => {
-                    fetch('https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Alunos', {
+                    fetch('http://localhost:3001/Alunos', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ id, nome, apelido, cursoID })
@@ -168,8 +169,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const method = editingCursoId ? 'PUT' : 'POST';
         const url = editingCursoId
-            ? `https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Cursos/${editingCursoId}`
-            : 'https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app/Cursos';
+            ? `http://localhost:3001/Cursos/${editingCursoId}`
+            : 'http://localhost:3001/Cursos';
 
         fetch(url, {
             method,

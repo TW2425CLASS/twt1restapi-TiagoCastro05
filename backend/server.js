@@ -1,8 +1,9 @@
+    
     const express = require('express');
     const { MongoClient, ObjectId } = require('mongodb');
 
     const app = express();
-    const port = 3001;
+    const port = process.env.PORT || 3001;
     const MONGO_URI = 'mongodb+srv://tiagoc:123@cluster0.rhvsbu0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; 
     const DB_NAME = 'Académicos';
 
@@ -18,7 +19,7 @@
         cursosCollection = db.collection('Cursos');
 
     app.listen(port, () => {
-        console.log(`Servidor a correr em https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app`);
+        console.log(`Servidor a correr em http://localhost:${port}`);
             });
         })
         .catch(err => console.error(err));
