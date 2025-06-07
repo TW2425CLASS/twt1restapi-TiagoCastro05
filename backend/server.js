@@ -14,7 +14,7 @@
         cursosCollection = db.collection('Cursos');
 
     app.listen(port, () => {
-        console.log(`Servidor a correr em https://twt1restapi-tiago-castro05.vercel.app/cursos`);
+        console.log(`Servidor a correr em https://twt1restapi-tiago-castro05-a7reuj6s7.vercel.app`);
             });
         })
         .catch(err => console.error(err));
