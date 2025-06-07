@@ -163,6 +163,9 @@ app.get('/Alunos/nome/:nome', async (req, res) => {
   res.json(aluno);
 });
 
+
+
+
 /**
  * @swagger
  * /Cursos:
@@ -187,6 +190,10 @@ app.get('/Cursos', async (req, res) => {
   const cursos = await cursosCollection.find().toArray();
   res.json(cursos);
 });
+
+
+
+
 
 /**
  * @swagger
@@ -224,6 +231,35 @@ app.get('/Cursos/:id', async (req, res) => {
     res.status(400).json({ message: 'ID inválido' });
   }
 });
+
+
+
+
+
+/**
+ * @swagger
+ * /Cursos/nome/{nomeCurso}:
+ *   get:
+ *     summary: Retorna curso(s) pelo nome
+ *     parameters:
+ *       - in: path
+ *         name: nomeCurso
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Nome do curso
+ *     responses:
+ *       200:
+ *         description: Curso(s) encontrado(s)
+ */
+app.get('/Cursos/nome/:nomeCurso', async (req, res) => {
+  const nomeCurso = req.params.nomeCurso;
+  const cursos = await cursosCollection.find({ nomeCurso: { $regex: nomeCurso, $options: 'i' } }).toArray();
+  if (!cursos.length) return res.status(404).json({ message: 'Curso não encontrado' });
+  res.json(cursos);
+});
+
+
 
 
 /**

@@ -90,3 +90,15 @@ form button {
 form button:hover {
     background-color: #003d80;
 }
+
+
+input[type="text"]#search-alunos,
+input[type="text"]#search-cursos {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
