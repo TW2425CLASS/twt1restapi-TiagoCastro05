@@ -3,7 +3,7 @@
 
     const app = express();
     const port = 3001;
-    const MONGO_URI = 'mongodb+srv://tiagoc:Rubi2012+@cluster0.rhvsbu0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+    const MONGO_URI = 'mongodb+srv://tiagoc:Rubi2012+@cluster0.rhvsbu0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; 
     const DB_NAME = 'Académicos';
 
 
@@ -14,7 +14,7 @@
         cursosCollection = db.collection('Cursos');
 
     app.listen(port, () => {
-        console.log(`Servidor a correr em http://localhost:${port}`);
+        console.log(`Servidor a correr em https://twt1restapi-tiago-castro05.vercel.app/cursos`);
             });
         })
         .catch(err => console.error(err));

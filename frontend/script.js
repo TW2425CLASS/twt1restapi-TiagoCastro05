@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fetch and display all Alunos
     function fetchAlunos() {
-        fetch('https://twt1restapi-tiago-castro05.vercel.app/alunos')
+        fetch('https://twt1restapi-tiago-castro05.vercel.app')
             .then(response => response.json())
             .then(alunos => {
                 const alunosList = document.getElementById('alunos-list');
