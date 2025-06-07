@@ -3,14 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const cursosList = document.getElementById('cursos-list');
     const alunoForm = document.getElementById('aluno-form');
     const cursoForm = document.getElementById('curso-form');
-    const apiURL: 'http://localhost'
+    const apiURL: 'http://localhost:10000'
 
     let editingAlunoId = null; // Track the Aluno being edited
     let editingCursoId = null; // Track the Curso being edited
 
     // Fetch and display all Alunos
     function fetchAlunos() {
-        fetch('http://localhost:3001/Alunos')
+        fetch('${apiURL}/Alunos')
             .then(response => response.json())
             .then(alunos => {
                 const alunosList = document.getElementById('alunos-list');
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fetch and display all Cursos
     function fetchCursos() {
-        fetch('http://localhost:3001/cursos')
+        fetch('${apiURL}/cursos')
             .then(response => response.json())
             .then(cursos => {
                 const cursosList = document.getElementById('cursos-list');
@@ -102,14 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Delete Aluno
     function deleteAluno(id) {
-        fetch(`http://localhost:3001/Alunos/${id}`, { method: 'DELETE' })
+        fetch(`${apiURL}/Alunos/${id}`, { method: 'DELETE' })
             .then(() => fetchAlunos())
             .catch(error => console.error('Error deleting Aluno:', error));
     }
 
     // Delete Curso
     function deleteCurso(id) {
-        fetch(`http://localhost:3001/Cursos/${id}`, { method: 'DELETE' })
+        fetch(`${apiURL}/Cursos/${id}`, { method: 'DELETE' })
             .then(() => fetchCursos())
             .catch(error => console.error('Error deleting Curso:', error));
     }
@@ -124,16 +124,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const method = editingAlunoId && editingAlunoId !== id ? 'DELETE' : editingAlunoId ? 'PUT' : 'POST';
         const url = editingAlunoId && editingAlunoId !== id
-            ? `http://localhost:3001/Alunos/${editingAlunoId}`
+            ? `${apiURL}/Alunos/${editingAlunoId}`
             : editingAlunoId
-            ? `http://localhost:3001/Alunos/${editingAlunoId}`
-            : 'http://localhost:3001/Alunos';
+            ? `${apiURL}/Alunos/${editingAlunoId}`
+            : '${apiURL}/Alunos';
 
         // Handle ID change by deleting the old entry and creating a new one
         if (editingAlunoId && editingAlunoId !== id) {
-            fetch(`http://localhost:3001/Alunos/${editingAlunoId}`, { method: 'DELETE' })
+            fetch(`${apiURL}/Alunos/${editingAlunoId}`, { method: 'DELETE' })
                 .then(() => {
-                    fetch('http://localhost:3001/Alunos', {
+                    fetch('${apiURL}/Alunos', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ id, nome, apelido, cursoID })
@@ -169,8 +169,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const method = editingCursoId ? 'PUT' : 'POST';
         const url = editingCursoId
-            ? `http://localhost:3001/Cursos/${editingCursoId}`
-            : 'http://localhost:3001/Cursos';
+            ? `${apiURL}/Cursos/${editingCursoId}`
+            : '${apiURL}/Cursos';
 
         fetch(url, {
             method,
