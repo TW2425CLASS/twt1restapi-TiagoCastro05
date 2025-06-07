@@ -6,6 +6,10 @@
     const MONGO_URI = 'mongodb+srv://tiagoc:123@cluster0.rhvsbu0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; 
     const DB_NAME = 'Académicos';
 
+    const cors = require('cors');
+    app.use(cors()); // Permite CORS
+
+
 
     MongoClient.connect(MONGO_URI)
         .then(client => {
