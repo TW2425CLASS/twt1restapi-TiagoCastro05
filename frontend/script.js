@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Delete button
                     const deleteBtn = document.createElement('button');
                     deleteBtn.textContent = 'Delete';
-                    deleteBtn.onclick = () => deleteCurso(curso.id);
+                    deleteBtn.onclick = () => deleteCurso(curso._id); // Usa o _id do MongoDB
 
                     btnContainer.appendChild(editBtn);
                     btnContainer.appendChild(deleteBtn);
@@ -96,16 +96,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Delete Aluno
-    function deleteCurso(_id) {
-    fetch(`${apiURL}/Cursos/${_id}`, { method: 'DELETE' })
-        .then(() => fetchCursos())
-        .catch(error => console.error('Error deleting Curso:', error));
+    function deleteAluno(_id) {
+    fetch(`${apiURL}/Alunos/${_id}`, { method: 'DELETE' })
+        .then(() => fetchAlunos())
+        .catch(error => console.error('Error deleting Aluno:', error));
 }
 
 
     // Delete Curso
-    function deleteCurso(id) {
-        fetch(`${apiURL}/Cursos/${id}`, { method: 'DELETE' })
+    function deleteCurso(_id) {
+        fetch(`${apiURL}/Cursos/${_id}`, { method: 'DELETE' })
             .then(() => fetchCursos())
             .catch(error => console.error('Error deleting Curso:', error));
     }
