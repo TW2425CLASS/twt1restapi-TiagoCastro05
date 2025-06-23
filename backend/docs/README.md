@@ -6,7 +6,7 @@
 
 ## Publicação
 
-- **Frontend:** [https://twt1restapi-tiago-castro05-4bkpc51uk.vercel.app](https://twt1restapi-tiago-castro05-4bkpc51uk.vercel.app)
+- **Frontend:** [https://twt1restapi-tiago-castro05.vercel.app](https://twt1restapi-tiago-castro05.vercel.app)
 - **Backend/API:** [https://twt1restapi-tiagocastro05-1.onrender.com](https://twt1restapi-tiagocastro05-1.onrender.com)
 - **Swagger (Documentação da API):** [https://twt1restapi-tiagocastro05-1.onrender.com/api-docs](https://twt1restapi-tiagocastro05-1.onrender.com/api-docs)
 

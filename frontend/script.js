@@ -15,33 +15,29 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(alunos => {
                 const alunosList = document.getElementById('alunos-list');
                 alunosList.innerHTML = '';
+
                 alunos.forEach(aluno => {
                     const li = document.createElement('li');
-                    li.textContent = `ID: ${aluno.id}, Nome: ${aluno.nome}, Apelido: ${aluno.apelido}, CursoID: ${aluno.cursoID} `;
+                    li.textContent = `ID: ${aluno.id}, Nome: ${aluno.nome}, Apelido: ${aluno.apelido}, CursoID: ${aluno.cursoID}`;
 
-                    // Create a container for the buttons
                     const btnContainer = document.createElement('div');
                     btnContainer.style.display = 'flex';
                     btnContainer.style.gap = '8px';
 
-                    // Edit button
                     const editBtn = document.createElement('button');
                     editBtn.textContent = 'Edit';
                     editBtn.onclick = () => editAluno(aluno);
 
-                    // Delete button
                     const deleteBtn = document.createElement('button');
                     deleteBtn.textContent = 'Delete';
-                    deleteBtn.onclick = () => deleteAluno(aluno.id);
+                    deleteBtn.onclick = () => deleteAluno(aluno._id); // Usa o _id do MongoDB
 
                     btnContainer.appendChild(editBtn);
                     btnContainer.appendChild(deleteBtn);
 
-                    // Clear li and add text and buttons
-                    li.textContent = `ID: ${aluno.id}, Nome: ${aluno.nome}, Apelido: ${aluno.apelido}, CursoID: ${aluno.cursoID}`;
                     li.appendChild(btnContainer);
                     alunosList.appendChild(li);
-                });
+            });
             })
             .catch(error => console.error('Error fetching Alunos:', error));
     }
@@ -86,26 +82,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Edit Aluno
     function editAluno(aluno) {
-        editingAlunoId = aluno.id;
+        editingAlunoId = aluno._id; // Usa o _id do MongoDB
         alunoForm.querySelector('input[name="id"]').value = aluno.id;
         alunoForm.querySelector('input[name="nome"]').value = aluno.nome;
         alunoForm.querySelector('input[name="apelido"]').value = aluno.apelido;
         alunoForm.querySelector('input[name="cursoID"]').value = aluno.cursoID;
     }
-
     // Edit Curso
     function editCurso(curso) {
-        editingCursoId = curso.id;
+        editingCursoId = curso._id; // Usa o _id do MongoDB
         cursoForm.querySelector('input[name="id"]').value = curso.id;
         cursoForm.querySelector('input[name="nomeCurso"]').value = curso.nomeCurso;
     }
 
     // Delete Aluno
-    function deleteAluno(id) {
-        fetch(`${apiURL}/Alunos/${id}`, { method: 'DELETE' })
-            .then(() => fetchAlunos())
-            .catch(error => console.error('Error deleting Aluno:', error));
-    }
+    function deleteCurso(_id) {
+    fetch(`${apiURL}/Cursos/${_id}`, { method: 'DELETE' })
+        .then(() => fetchCursos())
+        .catch(error => console.error('Error deleting Curso:', error));
+}
+
 
     // Delete Curso
     function deleteCurso(id) {
@@ -122,67 +118,66 @@ document.addEventListener("DOMContentLoaded", () => {
         const apelido = alunoForm.querySelector('input[name="apelido"]').value;
         const cursoID = alunoForm.querySelector('input[name="cursoID"]').value;
 
-        const method = editingAlunoId && editingAlunoId !== id ? 'DELETE' : editingAlunoId ? 'PUT' : 'POST';
-        const url = editingAlunoId && editingAlunoId !== id
-            ? `${apiURL}/Alunos/${editingAlunoId}`
-            : editingAlunoId
-            ? `${apiURL}/Alunos/${editingAlunoId}`
-            : `${apiURL}/Alunos`;
+        const alunoData = { id, nome, apelido, cursoID };
 
-        // Handle ID change by deleting the old entry and creating a new one
-        if (editingAlunoId && editingAlunoId !== id) {
-            fetch(`${apiURL}/Alunos/${editingAlunoId}`, { method: 'DELETE' })
-                .then(() => {
-                    fetch(`${apiURL}/Alunos`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id, nome, apelido, cursoID })
-                    })
-                        .then(() => {
-                            alunoForm.reset();
-                            editingAlunoId = null;
-                            fetchAlunos();
-                        })
-                        .catch(error => console.error('Error creating Aluno with new ID:', error));
-                })
-                .catch(error => console.error('Error deleting old Aluno:', error));
-        } else {
-            fetch(url, {
-                method,
+        if (editingAlunoId) {
+            fetch(`${apiURL}/Alunos/${editingAlunoId}`, {
+              method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, nome, apelido, cursoID })
+                body: JSON.stringify(alunoData)
+        })
+            .then(() => {
+                alunoForm.reset();
+                editingAlunoId = null;
+                fetchAlunos();
             })
-                .then(() => {
-                    alunoForm.reset();
-                    editingAlunoId = null;
-                    fetchAlunos();
-                })
-                .catch(error => console.error(`Error ${editingAlunoId ? 'updating' : 'creating'} Aluno:`, error));
+            .catch(error => console.error('Error updating Aluno:', error));
+         } else {
+            fetch(`${apiURL}/Alunos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(alunoData)
+        })
+            .then(() => {
+                alunoForm.reset();
+                fetchAlunos();
+            })
+            .catch(error => console.error('Error creating Aluno:', error));
         }
     });
 
     // Create or Update Curso
-    cursoForm.addEventListener('submit', (event) => {
+   cursoForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const id = cursoForm.querySelector('input[name="id"]').value;
         const nomeCurso = cursoForm.querySelector('input[name="nomeCurso"]').value;
 
-        const method = editingCursoId ? 'PUT' : 'POST';
-        const url = editingCursoId
-            ? `${apiURL}/Cursos/${editingCursoId}`
-            : `${apiURL}/Cursos`;
+        const cursoData = { id, nomeCurso };
 
-        fetch(url, {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id, nomeCurso })
+        if (editingCursoId) {
+            fetch(`${apiURL}/Cursos/${editingCursoId}`, {
+              method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cursoData)
         })
             .then(() => {
                 cursoForm.reset();
                 editingCursoId = null;
                 fetchCursos();
             })
-            .catch(error => console.error(`Error ${editingCursoId ? 'updating' : 'creating'} Curso:`, error));
+            .catch(error => console.error('Error updating Curso:', error));
+        } else {
+            fetch(`${apiURL}/Cursos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cursoData)
+        })
+            .then(() => {
+                cursoForm.reset();
+                fetchCursos();
+            })
+            .catch(error => console.error('Error creating Curso:', error));
+        }
     });
 
     // Initial fetch
